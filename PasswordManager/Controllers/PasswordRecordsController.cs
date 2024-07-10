@@ -24,9 +24,9 @@ namespace PasswordManager.Controllers
         }
         
         [HttpPost]
-        public async Task<ActionResult<PasswordRecord>> PostPasswordRecord(PasswordRecord passwordRecord)
+        public async Task<ActionResult<PasswordRecord>> PostPasswordRecord(PasswordRecordCreateDto passwordRecordDto)
         {
-            if (_context.PasswordRecords.Any(p => p.Name == passwordRecord.Name))
+            if (_context.PasswordRecords.Any(p => p.Name == passwordRecordDto.Name))
             {
                 return Conflict("Запись с таким именем уже существует.");
             }
@@ -36,13 +36,20 @@ namespace PasswordManager.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (passwordRecord.Type == "email" && !IsValidEmail(passwordRecord.Name))
+            if (passwordRecordDto.Type == "email" && !IsValidEmail(passwordRecordDto.Name))
             {
                 return BadRequest("Неверный адрес электронной почты.");
             }
 
-            passwordRecord.DateCreated = DateTime.UtcNow;
-            passwordRecord.IsPasswordVisible = false;
+            var passwordRecord = new PasswordRecord
+            {
+                Name = passwordRecordDto.Name,
+                Password = passwordRecordDto.Password,
+                Type = passwordRecordDto.Type,
+                DateCreated = DateTime.UtcNow,
+                IsPasswordVisible = false
+            };
+
             _context.PasswordRecords.Add(passwordRecord);
             await _context.SaveChangesAsync();
 
