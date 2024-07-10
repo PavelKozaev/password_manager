@@ -18,6 +18,6 @@ namespace PasswordManager.Models
         public string Type { get; set; } 
 
         public DateTime DateCreated { get; set; }
-
+        public bool IsPasswordVisible { get; set; } = false;
     }
 }

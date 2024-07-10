@@ -16,15 +16,13 @@ namespace PasswordManager.Controllers
         {
             _context = context;
         }
-
-        // GET: api/PasswordRecords
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PasswordRecord>>> GetPasswordRecords()
         {
             return await _context.PasswordRecords.OrderByDescending(p => p.DateCreated).ToListAsync();
         }
-
-        // POST: api/PasswordRecords
+        
         [HttpPost]
         public async Task<ActionResult<PasswordRecord>> PostPasswordRecord(PasswordRecord passwordRecord)
         {
@@ -44,10 +42,43 @@ namespace PasswordManager.Controllers
             }
 
             passwordRecord.DateCreated = DateTime.UtcNow;
+            passwordRecord.IsPasswordVisible = false;
             _context.PasswordRecords.Add(passwordRecord);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetPasswordRecords), new { id = passwordRecord.Id }, passwordRecord);
+        }
+
+        [HttpPatch("{id}/toggle-visibility")]
+        public async Task<IActionResult> TogglePasswordVisibility(int id)
+        {
+            var record = await _context.PasswordRecords.FindAsync(id);
+
+            if (record == null)
+            {
+                return NotFound();
+            }
+                        
+            record.IsPasswordVisible = !record.IsPasswordVisible;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<PasswordRecord>>> SearchPasswordRecords(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return await GetPasswordRecords();
+            }
+
+            var result = await _context.PasswordRecords
+                .Where(p => p.Name.Contains(query, StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(p => p.DateCreated)
+                .ToListAsync();
+
+            return result;
         }
 
         private bool IsValidEmail(string email)
