@@ -10,13 +10,13 @@ namespace PasswordManager.Controllers
     [ApiController]
     public class PasswordRecordsController : ControllerBase
     {
-        private readonly PasswordContext _context;
+        private readonly PasswordContext _context;      
 
         public PasswordRecordsController(PasswordContext context)
         {
-            _context = context;
+            _context = context;            
         }
-        
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PasswordRecord>>> GetPasswordRecords()
         {

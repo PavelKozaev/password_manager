@@ -1,0 +1,35 @@
+<div class="container d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <h1>Менеджер паролей</h1>
+  
+    <div class="input-group mt-3 mb-3 w-50">
+        <input type="text" class="form-control" placeholder="Поиск по названию или email" [(ngModel)]="searchQuery" (input)="onSearchInputChange()">
+      </div>
+
+    <button class="btn btn-lg btn-dark mt-3" (click)="onClickBtnCreateNewRecord()">
+      Создать новую запись
+    </button>
+  
+    <div class="mh-500px w-100 overflow-auto d-inline-block mt-5 shadow">
+      <table class="table table-striped">
+        <thead>
+          <tr>            
+            <th scope="col">№</th>
+            <th scope="col">Наименование</th>
+            <th scope="col">Пароль</th>            
+            <th scope="col">Дата записи</th>            
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let passwordrecord of PasswordRecordService.allPasswordRecords; index as i" (click)="togglePasswordVisibility(passwordrecord)">
+                <th scope="row">{{ passwordrecord.id }}</th>
+                <td>{{ passwordrecord.name }}</td>
+                <td class="password-cell">
+                  <span *ngIf="passwordrecord.isPasswordVisible">{{ passwordrecord.password }}</span>
+                  <span *ngIf="!passwordrecord.isPasswordVisible">••••••••••••••••••••••••</span>
+                </td>
+                <td>{{ passwordrecord.dateCreated | date: 'dd.MM.yyyy HH:mm' }}</td>
+              </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
