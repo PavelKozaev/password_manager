@@ -122,5 +122,5 @@ Password Manager - это веб-приложение для управления паролями, где можно сохраня
 
 ## Скриншоты
 
-![Главный экран](screenshots/main_screen.png)
-![Модальное окно создания записи](screenshots/create_modal.png)
+![Главный экран](PasswordManager/screenshots/main_screen.png)
+![Модальное окно создания записи](PasswordManager/screenshots/create_modal.png)
