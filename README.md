@@ -9,12 +9,12 @@ Password Manager - это веб-приложение для управления паролями, где можно сохраня
 ### Backend
 
 - .NET 8.0
-- ASP.NET Core
+- ASP.NET Core Web API
 - Entity Framework Core (In-Memory Database)
 
 ### Frontend
 
-- Angular
+- Angular 18.1.0
 - TypeScript
 - HTML/CSS
 - Bootstrap
